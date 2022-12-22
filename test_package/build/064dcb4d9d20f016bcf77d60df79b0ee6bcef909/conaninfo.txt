@@ -1,0 +1,39 @@
+[settings]
+    arch=armv8
+    build_type=Release
+    compiler=gcc
+    compiler.libcxx=libstdc++
+    compiler.version=11
+    os=Linux
+
+[requires]
+    SECP256K1/0.2
+
+[options]
+
+
+[full_settings]
+    arch=armv8
+    build_type=Release
+    compiler=gcc
+    compiler.libcxx=libstdc++
+    compiler.version=11
+    os=Linux
+
+[full_requires]
+    SECP256K1/0.2@proofofwork/unstable:cd8026b935194f73e2874ad8584dfacb494cf4ce
+    autoconf/2.71:5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9
+    automake/1.16.3:258f6f05ca54813b3d7180161753df7f9ccf7e1d
+    libtool/2.4.6:59bdb77ed037c8c297ae1c2aaea268046a31c740
+
+[full_options]
+    SECP256K1:fPIC=True
+    SECP256K1:shared=False
+    libtool:fPIC=True
+    libtool:shared=False
+
+[recipe_hash]
+
+
+[env]
+

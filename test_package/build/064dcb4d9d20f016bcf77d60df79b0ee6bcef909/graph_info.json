@@ -1,0 +1,26 @@
+{
+ "options": [
+  [
+   "SECP256K1:fPIC",
+   "True"
+  ],
+  [
+   "SECP256K1:shared",
+   "False"
+  ],
+  [
+   "libtool:fPIC",
+   "True"
+  ],
+  [
+   "libtool:shared",
+   "False"
+  ]
+ ],
+ "root": {
+  "name": null,
+  "version": null,
+  "user": "proofofwork",
+  "channel": "unstable"
+ }
+}

@@ -1,0 +1,67 @@
+{
+ "graph_lock": {
+  "nodes": {
+   "0": {
+    "options": "SECP256K1:fPIC=True\nSECP256K1:shared=False\nlibtool:fPIC=True\nlibtool:shared=False",
+    "requires": [
+     "1"
+    ],
+    "path": "../../conanfile.py",
+    "context": "host"
+   },
+   "1": {
+    "ref": "SECP256K1/0.2@proofofwork/unstable",
+    "options": "fPIC=True\nshared=False\nlibtool:fPIC=True\nlibtool:shared=False",
+    "package_id": "cd8026b935194f73e2874ad8584dfacb494cf4ce",
+    "prev": "0",
+    "modified": true,
+    "requires": [
+     "2",
+     "4",
+     "5"
+    ],
+    "context": "host"
+   },
+   "2": {
+    "ref": "autoconf/2.71",
+    "options": "",
+    "package_id": "5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9",
+    "prev": "0",
+    "requires": [
+     "3"
+    ],
+    "context": "host"
+   },
+   "3": {
+    "ref": "m4/1.4.19",
+    "options": "",
+    "package_id": "1a032419479e0fe8660712050df2775c495d3123",
+    "prev": "0",
+    "context": "host"
+   },
+   "4": {
+    "ref": "automake/1.16.3",
+    "options": "",
+    "package_id": "258f6f05ca54813b3d7180161753df7f9ccf7e1d",
+    "prev": "0",
+    "requires": [
+     "2"
+    ],
+    "context": "host"
+   },
+   "5": {
+    "ref": "libtool/2.4.6",
+    "options": "fPIC=True\nshared=False",
+    "package_id": "59bdb77ed037c8c297ae1c2aaea268046a31c740",
+    "prev": "0",
+    "requires": [
+     "4"
+    ],
+    "context": "host"
+   }
+  },
+  "revisions_enabled": false
+ },
+ "version": "0.4",
+ "profile_host": "[settings]\narch=armv8\narch_build=armv8\nbuild_type=Release\ncompiler=gcc\ncompiler.libcxx=libstdc++\ncompiler.version=11\nos=Linux\nos_build=Linux\n[options]\n[build_requires]\n[env]\n"
+}
