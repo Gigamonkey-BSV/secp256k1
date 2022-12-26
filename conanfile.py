@@ -9,7 +9,7 @@ class SECP256K1Conan(ConanFile):
     author = ""
     url = "https://github.com/Gigamonkey-BSV/secp256k1"
     description = "Optimized C library for EC operations on curve secp256k1 "
-    topics = ("Ecliptical Curve", "secp256k1"")
+    topics = ("Ecliptical Curve", "secp256k1")
     settings = "os", "compiler", "build_type", "arch"
     options = {"shared": [True, False], "fPIC": [True, False]}
     default_options = {"shared": False, "fPIC": True}
