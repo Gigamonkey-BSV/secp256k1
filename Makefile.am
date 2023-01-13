@@ -73,7 +73,9 @@ noinst_HEADERS += examples/random.h
 PRECOMPUTED_LIB = libsecp256k1_precomputed.la
 noinst_LTLIBRARIES = $(PRECOMPUTED_LIB)
 libsecp256k1_precomputed_la_SOURCES =  src/precomputed_ecmult.c src/precomputed_ecmult_gen.c
-libsecp256k1_precomputed_la_CPPFLAGS = $(SECP_INCLUDES) $(SECP_CONFIG_DEFINES)
+# We need `-I$(top_srcdir)/src` in VPATH builds if libsecp256k1_precomputed_la_SOURCES have been recreated in the build tree.
+# This helps users and packagers who insist on recreating the precomputed files (e.g., Gentoo).
+libsecp256k1_precomputed_la_CPPFLAGS = -I$(top_srcdir)/src $(SECP_INCLUDES) $(SECP_CONFIG_DEFINES)
 
 if USE_EXTERNAL_ASM
 COMMON_LIB = libsecp256k1_common.la
@@ -105,6 +107,7 @@ if USE_BENCHMARK
 noinst_PROGRAMS += bench bench_internal bench_ecmult
 bench_SOURCES = src/bench.c
 bench_LDADD = libsecp256k1.la $(SECP_LIBS) $(SECP_TEST_LIBS) $(COMMON_LIB)
+bench_CPPFLAGS = $(SECP_CONFIG_DEFINES)
 bench_internal_SOURCES = src/bench_internal.c
 bench_internal_LDADD = $(SECP_LIBS) $(COMMON_LIB) $(PRECOMPUTED_LIB)
 bench_internal_CPPFLAGS = $(SECP_INCLUDES) $(SECP_CONFIG_DEFINES)
@@ -115,21 +118,26 @@ endif
 
 TESTS =
 if USE_TESTS
-noinst_PROGRAMS += tests
-tests_SOURCES = src/tests.c
-tests_CPPFLAGS = $(SECP_INCLUDES) $(SECP_TEST_INCLUDES) $(SECP_CONFIG_DEFINES)
+TESTS += noverify_tests
+noinst_PROGRAMS += noverify_tests
+noverify_tests_SOURCES = src/tests.c
+noverify_tests_CPPFLAGS = $(SECP_INCLUDES) $(SECP_TEST_INCLUDES) $(SECP_CONFIG_DEFINES)
+noverify_tests_LDADD = $(SECP_LIBS) $(SECP_TEST_LIBS) $(COMMON_LIB) $(PRECOMPUTED_LIB)
+noverify_tests_LDFLAGS = -static
 if VALGRIND_ENABLED
-tests_CPPFLAGS += -DVALGRIND
+noverify_tests_CPPFLAGS += -DVALGRIND
 noinst_PROGRAMS += valgrind_ctime_test
 valgrind_ctime_test_SOURCES = src/valgrind_ctime_test.c
 valgrind_ctime_test_LDADD = libsecp256k1.la $(SECP_LIBS) $(COMMON_LIB)
 endif
 if !ENABLE_COVERAGE
-tests_CPPFLAGS += -DVERIFY
-endif
-tests_LDADD = $(SECP_LIBS) $(SECP_TEST_LIBS) $(COMMON_LIB) $(PRECOMPUTED_LIB)
-tests_LDFLAGS = -static
 TESTS += tests
+noinst_PROGRAMS += tests
+tests_SOURCES  = $(noverify_tests_SOURCES)
+tests_CPPFLAGS = $(noverify_tests_CPPFLAGS) -DVERIFY
+tests_LDADD    = $(noverify_tests_LDADD)
+tests_LDFLAGS  = $(noverify_tests_LDFLAGS)
+endif
 endif
 
 if USE_EXHAUSTIVE_TESTS
@@ -148,7 +156,7 @@ endif
 if USE_EXAMPLES
 noinst_PROGRAMS += ecdsa_example
 ecdsa_example_SOURCES = examples/ecdsa.c
-ecdsa_example_CPPFLAGS = -I$(top_srcdir)/include $(SECP_CONFIG_DEFINES)
+ecdsa_example_CPPFLAGS = -I$(top_srcdir)/include
 ecdsa_example_LDADD = libsecp256k1.la
 ecdsa_example_LDFLAGS = -static
 if BUILD_WINDOWS
@@ -158,7 +166,7 @@ TESTS += ecdsa_example
 if ENABLE_MODULE_ECDH
 noinst_PROGRAMS += ecdh_example
 ecdh_example_SOURCES = examples/ecdh.c
-ecdh_example_CPPFLAGS = -I$(top_srcdir)/include $(SECP_CONFIG_DEFINES)
+ecdh_example_CPPFLAGS = -I$(top_srcdir)/include
 ecdh_example_LDADD = libsecp256k1.la
 ecdh_example_LDFLAGS = -static
 if BUILD_WINDOWS
@@ -169,7 +177,7 @@ endif
 if ENABLE_MODULE_SCHNORRSIG
 noinst_PROGRAMS += schnorr_example
 schnorr_example_SOURCES = examples/schnorr.c
-schnorr_example_CPPFLAGS = -I$(top_srcdir)/include $(SECP_CONFIG_DEFINES)
+schnorr_example_CPPFLAGS = -I$(top_srcdir)/include
 schnorr_example_LDADD = libsecp256k1.la
 schnorr_example_LDFLAGS = -static
 if BUILD_WINDOWS
